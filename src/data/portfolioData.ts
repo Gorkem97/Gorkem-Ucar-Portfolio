@@ -258,6 +258,9 @@ export const projectsData: Project[] = [
     description: 'Immersive VR title built with Unity XR featuring tactile hand interactions, spatial puzzles, and 3D audio.',
     longDescription: 'A completed 6-DoF VR game developed with Unity XR. Features natural physics-based grabbing, comfort locomotion settings, and spatial audio mechanics.',
     coverImage: 'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?q=80&w=1200&auto=format&fit=crop',
+    videos: [
+      '/videos/vr.mp4',
+    ],
     screenshots: [
       'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1000&auto=format&fit=crop',
