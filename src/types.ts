@@ -24,6 +24,8 @@ export interface Project {
     github?: string;
     itchio?: string;
     liveDemo?: string;
+    articleUrl?: string;
+    articleLabel?: string;
   };
   features: string[];
   technicalHighlights: string[];
@@ -81,10 +83,11 @@ export interface RecognitionItem {
   name: string;
   role: string;
   organization: string;
-  quote: string;
+  description: string;
   year: string;
   tag: string;
-  avatarText: string;
+  badgeColor?: string;
+  iconType?: 'trophy' | 'academic' | 'certificate';
 }
 
 export interface PersonalInfo {

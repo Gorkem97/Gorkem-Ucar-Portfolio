@@ -4,7 +4,8 @@ import {
   Gamepad2, 
   Github, 
   ArrowUpRight,
-  ChevronRight
+  ChevronRight,
+  BookOpen
 } from 'lucide-react';
 import { projectsData } from '../data/portfolioData';
 import { Project, ProjectCategory } from '../types';
@@ -27,11 +28,11 @@ export const ProjectsSection: React.FC = () => {
     return project.category === activeCategory;
   });
 
-  // Assign distinct themed banner colors for cards like in the reference image
+  // Assign distinct themed banner colors for cards matching project order
   const cardThemes = [
-    { headerBg: 'bg-[#F5AF38]', badgeText: 'text-[#1E232A]', label: 'AI Workflow & Arch' },
-    { headerBg: 'bg-[#1F5A63]', badgeText: 'text-white', label: 'Unity 3D Game' },
+    { headerBg: 'bg-[#F5AF38]', badgeText: 'text-[#1E232A]', label: 'Current Project • AI Dev' },
     { headerBg: 'bg-[#2D3E50]', badgeText: 'text-white', label: 'VR / 6-DoF' },
+    { headerBg: 'bg-[#1F5A63]', badgeText: 'text-white', label: 'Unity 3D Game' },
     { headerBg: 'bg-[#E26D46]', badgeText: 'text-white', label: 'Game Jam Release' },
   ];
 
@@ -83,8 +84,8 @@ export const ProjectsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Project Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Project Cards Grid - 2 columns on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-10">
           {filteredProjects.slice(0, 6).map((project, index) => {
             const theme = cardThemes[index % cardThemes.length];
             return (
@@ -157,6 +158,18 @@ export const ProjectsSection: React.FC = () => {
                     </button>
 
                     <div className="flex items-center gap-2">
+                      {project.links.articleUrl && (
+                        <a
+                          href={project.links.articleUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          title={project.links.articleLabel || "Read Erasmus+ Publication"}
+                          className="p-2 rounded-full bg-[#FAF5EB] hover:bg-[#235E63] hover:text-white text-[#235E63] transition-all"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+
                       {project.links.itchio && (
                         <a
                           href={project.links.itchio}

@@ -10,7 +10,8 @@ import {
   Sparkles, 
   Cpu, 
   ChevronRight, 
-  Code
+  Code,
+  BookOpen
 } from 'lucide-react';
 import { Project } from '../types';
 import { SequentialVideoPlayer } from './SequentialVideoPlayer';
@@ -126,6 +127,19 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               )}
+
+              {project.links.articleUrl && (
+                <a
+                  href={project.links.articleUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#FAF5EB] border border-[#235E63]/30 text-[#235E63] hover:bg-[#235E63] hover:text-white rounded-xl text-sm font-bold shadow-xs transition-colors"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>{project.links.articleLabel || 'Project Article & Publication'}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
             </div>
 
             {/* Overview */}
@@ -137,6 +151,24 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               <p className="text-sm sm:text-base text-[#4A505C] leading-relaxed font-light">
                 {project.longDescription}
               </p>
+
+              {project.links.articleUrl && (
+                <div className="mt-3 p-3.5 bg-[#FAF5EB] rounded-xl border border-[#EAE2D3] flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 text-xs text-[#4A505C]">
+                    <BookOpen className="w-4 h-4 text-[#235E63] shrink-0" />
+                    <span>Published EU initiative summary on European Commission EPALE platform</span>
+                  </div>
+                  <a
+                    href={project.links.articleUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs font-bold text-[#235E63] hover:text-[#1A4B50] inline-flex items-center gap-1 underline underline-offset-2 shrink-0"
+                  >
+                    <span>Read Article</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* Features & Key Systems */}
