@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { getAssetUrl } from '../utils/assets';
 
 interface SequentialVideoPlayerProps {
@@ -14,54 +14,75 @@ export const SequentialVideoPlayer: React.FC<SequentialVideoPlayerProps> = ({
   alt,
   className = '',
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [hasError, setHasError] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [failedIndices, setFailedIndices] = useState<Set<number>>(new Set());
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  const hasVideos = Boolean(videos && videos.length > 0);
-  const currentVideo = hasVideos && videos ? videos[currentIndex % videos.length] : null;
+  const validVideos = videos || [];
+  const hasVideos = validVideos.length > 0;
 
-  // Reset state if videos change
+  // Reset indices on videos prop change
   useEffect(() => {
-    setCurrentIndex(0);
-    setHasError(false);
-    setIsLoaded(false);
-  }, [videos]);
+    videoRefs.current = videoRefs.current.slice(0, validVideos.length);
+    setActiveIndex(0);
+    setFailedIndices(new Set());
+  }, [videos, validVideos.length]);
 
-  // Handle switching and autoplaying safely across all browser policies
+  // Ensure active video is played reliably
+  const playActiveVideo = useCallback((index: number) => {
+    const el = videoRefs.current[index];
+    if (el) {
+      el.defaultMuted = true;
+      el.muted = true;
+      el.playsInline = true;
+      const playPromise = el.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay policy fallback
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
-    const videoEl = videoRef.current;
-    if (!videoEl || !currentVideo || hasError) return;
+    if (!hasVideos) return;
+    playActiveVideo(activeIndex);
+  }, [activeIndex, hasVideos, playActiveVideo]);
 
-    // Critical for iOS Safari / Chrome autoplay policy
-    videoEl.defaultMuted = true;
-    videoEl.muted = true;
-    videoEl.playsInline = true;
-
-    // Play promise handler
-    const playPromise = videoEl.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay may be deferred until visible or allowed
-      });
+  // When a video finishes, immediately play the next one and crossfade
+  const handleEnded = (index: number) => {
+    if (validVideos.length <= 1) {
+      // Loop single video seamlessly
+      const el = videoRefs.current[0];
+      if (el) {
+        el.currentTime = 0;
+        el.play().catch(() => {});
+      }
+      return;
     }
-  }, [currentIndex, currentVideo, hasError]);
 
-  // When a video finishes, smoothly go to the next in sequence
-  const handleEnded = () => {
-    if (videos && videos.length > 1) {
-      setCurrentIndex((prev) => (prev + 1) % videos.length);
+    const nextIndex = (index + 1) % validVideos.length;
+    const nextVideoEl = videoRefs.current[nextIndex];
+    if (nextVideoEl) {
+      nextVideoEl.currentTime = 0;
+      nextVideoEl.defaultMuted = true;
+      nextVideoEl.muted = true;
+      nextVideoEl.playsInline = true;
+      nextVideoEl.play().catch(() => {});
     }
+    setActiveIndex(nextIndex);
   };
 
-  const handleError = () => {
-    // If a video fails to load, gracefully show fallback poster/image
-    setHasError(true);
+  const handleError = (index: number) => {
+    setFailedIndices((prev) => {
+      const updated = new Set(prev);
+      updated.add(index);
+      return updated;
+    });
   };
 
-  // If no videos or error occurred, render optimized image
-  if (!hasVideos || !currentVideo || hasError) {
+  // If no videos provided or all video files failed, render fallback image
+  if (!hasVideos || failedIndices.size === validVideos.length) {
     return (
       <img
         src={getAssetUrl(fallbackImage)}
@@ -73,34 +94,40 @@ export const SequentialVideoPlayer: React.FC<SequentialVideoPlayerProps> = ({
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#1E232A]">
-      <video
-        ref={videoRef}
-        key={currentVideo}
-        src={getAssetUrl(currentVideo)}
-        poster={getAssetUrl(fallbackImage)}
-        autoPlay
-        muted
-        playsInline
-        loop={videos && videos.length === 1}
-        preload="auto"
-        onEnded={handleEnded}
-        onError={handleError}
-        onLoadedData={() => setIsLoaded(true)}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${
-          isLoaded ? 'opacity-100' : 'opacity-90'
-        } ${className}`}
-      />
+    <div className="relative w-full h-full overflow-hidden bg-[#14181F]">
+      {validVideos.map((videoSrc, idx) => {
+        const isActive = idx === activeIndex;
+        return (
+          <video
+            key={videoSrc}
+            ref={(el) => {
+              videoRefs.current[idx] = el;
+            }}
+            src={getAssetUrl(videoSrc)}
+            autoPlay={idx === 0}
+            muted
+            playsInline
+            loop={validVideos.length === 1}
+            preload="auto"
+            onEnded={() => handleEnded(idx)}
+            onError={() => handleError(idx)}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
+              isActive ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'
+            } ${className}`}
+          />
+        );
+      })}
 
-      {/* Multiple clip sequence indicators */}
-      {videos && videos.length > 1 && (
-        <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10 bg-[#1E232A]/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
+      {/* Multiple clip sequence indicator badge */}
+      {validVideos.length > 1 && (
+        <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-20 bg-[#1E232A]/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
           <div className="w-1.5 h-1.5 rounded-full bg-[#38D39F] animate-pulse" />
           <span className="text-[10px] font-mono font-semibold text-white/90">
-            {currentIndex + 1}/{videos.length}
+            {activeIndex + 1}/{validVideos.length}
           </span>
         </div>
       )}
     </div>
   );
 };
+
