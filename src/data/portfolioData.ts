@@ -219,6 +219,10 @@ export const projectsData: Project[] = [
     description: 'Gamified environmental sustainability simulation challenging players to manage resources and eco-decisions.',
     longDescription: 'Created specifically for GreenMate, this project models conservation and waste reduction loops through interactive gameplay challenges built in Unity and C#.',
     coverImage: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop',
+    videos: [
+      '/videos/greenkids/greenkids_1.m4v',
+      '/videos/greenkids/greenkids_2.m4v',
+    ],
     screenshots: [
       'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1000&auto=format&fit=crop',
