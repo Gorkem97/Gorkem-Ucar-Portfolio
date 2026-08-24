@@ -291,6 +291,11 @@ export const projectsData: Project[] = [
     description: 'Collection of 2 playable games created under 48-hour Game Jam constraints and published on Itch.io.',
     longDescription: 'Participated in 2 separate Game Jams, designing core mechanics, programming responsive C# controllers, and shipping playable prototypes within 48 hours.',
     coverImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop',
+    videos: [
+      '/videos/jam/trapped.mp4',
+      '/videos/jam/smoke.mp4',
+      '/videos/jam/jam_gameplay.mp4',
+    ],
     screenshots: [
       'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop',
