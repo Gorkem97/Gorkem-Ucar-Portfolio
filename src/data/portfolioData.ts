@@ -178,16 +178,8 @@ export const projectsData: Project[] = [
     longDescription: 'An experimental Unity 3D project exploring the integration of Antigravity AI tooling into modern game development workflows. Emphasizes clean, scalable architecture, event-driven state decoupling, and responsive camera systems adaptable across diverse project domains.',
     coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop',
     videos: [
-      {
-        title: 'Task Assignment & AI Dispatch',
-        url: '/videos/anti-assign.mp4',
-        description: 'AI behavior assignment, agent command dispatching, and dynamic state evaluation in Unity 3D.',
-      },
-      {
-        title: 'Object Carry & Physical Interaction',
-        url: '/videos/anti-carry.mp4',
-        description: 'Smooth kinematic object holding, weight responsiveness, and state machine transitions in Unity 3D.',
-      },
+      '/videos/assign.m4v',
+      '/videos/carry.m4v',
     ],
     screenshots: [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop',
@@ -227,18 +219,6 @@ export const projectsData: Project[] = [
     description: 'Gamified environmental sustainability simulation challenging players to manage resources and eco-decisions.',
     longDescription: 'Created specifically for GreenMate, this project models conservation and waste reduction loops through interactive gameplay challenges built in Unity and C#.',
     coverImage: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop',
-    videos: [
-      {
-        title: 'GreenMate Gameplay Session 1',
-        url: '/videos/greenmate-session1.mp4',
-        description: 'Interactive environmental mini-games and gameplay loop.',
-      },
-      {
-        title: 'GreenMate Gameplay Session 2',
-        url: '/videos/greenmate-session2.mp4',
-        description: 'Eco challenge tasks, feedback UI, and scoring logic.',
-      },
-    ],
     screenshots: [
       'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1000&auto=format&fit=crop',
@@ -290,13 +270,6 @@ export const projectsData: Project[] = [
     links: {
       github: 'https://github.com/JustWeety/Gozde-Durmus-Vr-Project',
     },
-    videos: [
-      {
-        title: '6-DoF VR Spatial Mechanics & Headset Playthrough',
-        url: '/videos/vr-project.mp4',
-        description: 'Immersive VR spatial mechanics, physical hand tracking, and headset playthrough in Unity XR.',
-      },
-    ],
     features: [
       'Physics-based direct hand interaction for picking, tossing, and tool usage.',
       'Comfort-focused locomotion including teleportation and smooth turning.',
@@ -314,23 +287,6 @@ export const projectsData: Project[] = [
     description: 'Collection of 2 playable games created under 48-hour Game Jam constraints and published on Itch.io.',
     longDescription: 'Participated in 2 separate Game Jams, designing core mechanics, programming responsive C# controllers, and shipping playable prototypes within 48 hours.',
     coverImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop',
-    videos: [
-      {
-        title: 'Trapped - Game Jam Playthrough',
-        url: '/videos/jam-trapped.mp4',
-        description: 'Obstacle avoidance, procedural hazards, and level completion mechanics.',
-      },
-      {
-        title: 'Game Jam Showcase Session 1',
-        url: '/videos/jam-session1.mp4',
-        description: '48-hour sprint Game Jam project live gameplay capture.',
-      },
-      {
-        title: 'Game Jam Showcase Session 2',
-        url: '/videos/jam-session2.mp4',
-        description: 'Core controller dynamics, sprite animation feedback, and audio integration.',
-      },
-    ],
     screenshots: [
       'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop',

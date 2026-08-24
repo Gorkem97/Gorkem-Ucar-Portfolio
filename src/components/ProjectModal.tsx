@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
@@ -10,25 +10,18 @@ import {
   Sparkles, 
   Cpu, 
   ChevronRight, 
-  Code,
-  Film
+  Code
 } from 'lucide-react';
 import { Project } from '../types';
-import { ContinuousVideoPlayer } from './ContinuousVideoPlayer';
-import { getAssetUrl } from '../utils/assets';
+import { SequentialVideoPlayer } from './SequentialVideoPlayer';
 
 interface ProjectModalProps {
   project: Project | null;
+  isOpen?: boolean;
   onClose: () => void;
 }
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
-  const [activeClipIndex, setActiveClipIndex] = useState(0);
-
-  useEffect(() => {
-    setActiveClipIndex(0);
-  }, [project?.id]);
-
   if (!project) return null;
 
   return (
@@ -45,27 +38,14 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           transition={{ duration: 0.3 }}
           className="relative bg-[#FAF5EB] rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-[#EAE2D3] z-10 my-8"
         >
-          {/* Header Video / Image Showcase */}
+          {/* Header Image/Video Showcase */}
           <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-[#1E232A]">
-            {project.videos && project.videos.length > 0 ? (
-              <ContinuousVideoPlayer
-                videos={project.videos}
-                fallbackImage={project.coverImage}
-                autoPlay={true}
-                muted={true}
-                playsInline={true}
-                className="w-full h-full"
-                objectFit="cover"
-                activeClipIndex={activeClipIndex}
-                onClipChange={(idx) => setActiveClipIndex(idx)}
-              />
-            ) : (
-              <img
-                src={getAssetUrl(project.coverImage)}
-                alt={project.title}
-                className="w-full h-full object-cover filter brightness-90"
-              />
-            )}
+            <SequentialVideoPlayer
+              videos={project.videos}
+              fallbackImage={project.coverImage}
+              alt={project.title}
+              className="filter brightness-90"
+            />
             
             {/* Subtle Gradient Overlay for Text Readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#1E232A] via-[#1E232A]/30 to-transparent pointer-events-none" />
@@ -158,64 +138,6 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 {project.longDescription}
               </p>
             </div>
-
-            {/* Continuous Video Sequence Showcase */}
-            {project.videos && project.videos.length > 0 && (
-              <div className="p-5 bg-white rounded-2xl border border-[#EAE2D3]">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1E232A] mb-3 flex items-center gap-1.5">
-                  <Film className="w-3.5 h-3.5 text-[#1F5A63]" />
-                  <span>Included Video Showcase Clips ({project.videos.length})</span>
-                </h4>
-                <div className="space-y-2.5">
-                  {project.videos.map((vid, idx) => {
-                    const isCurrent = idx === activeClipIndex;
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setActiveClipIndex(idx)}
-                        className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer ${
-                          isCurrent
-                            ? 'bg-[#1F5A63]/10 border-2 border-[#1F5A63] shadow-xs'
-                            : 'bg-[#FAF5EB] hover:bg-[#F3EAD9] border border-[#EAE2D3]'
-                        }`}
-                      >
-                        <div
-                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 transition-colors ${
-                            isCurrent
-                              ? 'bg-[#1F5A63] text-white ring-2 ring-[#1F5A63]/30'
-                              : 'bg-[#737C8B]/20 text-[#1E232A]'
-                          }`}
-                        >
-                          {idx + 1}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-2">
-                            <h5
-                              className={`text-xs sm:text-sm font-bold ${
-                                isCurrent ? 'text-[#1F5A63]' : 'text-[#1E232A]'
-                              }`}
-                            >
-                              {vid.title}
-                            </h5>
-                            {isCurrent && (
-                              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#1F5A63] text-white shrink-0">
-                                Playing
-                              </span>
-                            )}
-                          </div>
-                          {vid.description && (
-                            <p className="text-xs text-[#737C8B] mt-0.5">
-                              {vid.description}
-                            </p>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
 
             {/* Features & Key Systems */}
             {project.features && project.features.length > 0 && (
